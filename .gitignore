@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
+
+# Env / secrets
+.env
+
+# Data (large downloads, don't commit)
+data/*
+!data/.gitkeep
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# DB
+*.sqlite3
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
