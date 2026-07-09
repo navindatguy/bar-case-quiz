@@ -7,9 +7,7 @@ from backend.app.database import Base
 
 
 class Case(Base):
-    """A single court opinion, sourced from CAP bulk data."""
-
-    __tablename__ = "cases"
+ __tablename__ = "cases"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     cap_id: Mapped[str] = mapped_column(String, unique=True, index=True)
@@ -17,17 +15,12 @@ class Case(Base):
     citation: Mapped[str] = mapped_column(String)
     court: Mapped[str] = mapped_column(String)
     jurisdiction: Mapped[str] = mapped_column(String)
-    decision_date: Mapped[str] = mapped_column(String)  # stored as ISO string from CAP
+    decision_date: Mapped[str] = mapped_column(String) 
     full_text: Mapped[str] = mapped_column(Text)
     source_url: Mapped[str] = mapped_column(String, nullable=True)
-
     questions: Mapped[list["Question"]] = relationship(back_populates="case")
-
-
 class Question(Base):
-    """An LLM-generated bar-exam-style question grounded in a specific case."""
-
-    __tablename__ = "questions"
+ __tablename__ = "questions"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     case_id: Mapped[int] = mapped_column(ForeignKey("cases.id"))
@@ -38,11 +31,10 @@ class Question(Base):
     choice_b: Mapped[str] = mapped_column(Text)
     choice_c: Mapped[str] = mapped_column(Text)
     choice_d: Mapped[str] = mapped_column(Text)
-    correct_choice: Mapped[str] = mapped_column(String)  # "A" | "B" | "C" | "D"
+    correct_choice: Mapped[str] = mapped_column(String)  # abcd string
     explanation: Mapped[str] = mapped_column(Text)
     source_excerpt: Mapped[str] = mapped_column(Text)  # snippet of case text the answer relies on
 
-    reviewed: Mapped[bool] = mapped_column(default=False)  # human sanity-check flag
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     case: Mapped["Case"] = relationship(back_populates="questions")
